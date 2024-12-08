@@ -9,7 +9,8 @@ import folder_paths
 from .src.condition import Condition
 from .src.generate import generate, seed_everything
 
-omini_path = os.path.join(folder_paths.models_dir, "diffusers", "OminiControl")
+diffusers_path = os.path.join(folder_paths.models_dir, "diffusers")
+omini_path = os.path.join(diffusers_path, "OminiControl")
 supported_condition = ["depth", "canny", "subject", "coloring", "deblurring", "fill"]
 
 def guess_condition_from_name(model_name):
@@ -54,12 +55,12 @@ class OminiControlSampler:
         comfy.model_management.unload_all_models()
         device = comfy.model_management.get_torch_device()
         pipe = FluxPipeline.from_pretrained(
-            f"./models/diffusers/{flux_model}",
+            os.path.join(diffusers_path, flux_model),
             torch_dtype=torch.bfloat16,
             local_files_only=True
         ).to(device)
         pipe.load_lora_weights(
-            "./models/diffusers/OminiControl",
+            omini_path,
             weight_name=omini_control,
             adapter_name=condition,
             local_files_only=True
