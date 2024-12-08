@@ -2,3 +2,4 @@ transformers
 diffusers
 peft
 protobuf
+torchao --pre --index-url https://download.pytorch.org/whl/nightly/cu124
